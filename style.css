@@ -1,0 +1,386 @@
+:root {
+    --neon-cyan: #00f2ff;
+    --neon-pink: #ff0055;
+    --neon-purple: #7000ff;
+    --bg-void: #000103;
+    --bg-dark: #020617;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border-glow: rgba(0, 242, 255, 0.3);
+    --text-primary: #e0e0e0;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* Hide default cursor */
+    /* Smooth scrolling for anchor links */
+    scroll-behavior: smooth; 
+}
+
+body {
+    background: var(--bg-void);
+    color: var(--text-primary);
+    font-family: 'Syncopate', sans-serif;
+    overflow-x: hidden;
+    perspective: 2000px; /* Deeper perspective for 3D effects */
+}
+
+/* --- BOOTLOADER SCREEN --- */
+#boot-screen {
+    position: fixed;
+    inset: 0; /* top, right, bottom, left to 0 */
+    background: #000;
+    z-index: 10005;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'JetBrains Mono', monospace;
+    transition: opacity 1s ease-out, filter 1s ease-out; /* Smooth fade out */
+}
+
+.boot-glitch {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    color: var(--neon-cyan);
+    text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-purple);
+    animation: glitch-snap 0.2s infinite alternate;
+    margin-bottom: 20px;
+}
+
+@keyframes glitch-snap {
+    0% { text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-purple); transform: skewX(0deg); }
+    100% { text-shadow: -2px 0 var(--neon-pink), 2px 0 var(--neon-purple); transform: skewX(5deg); }
+}
+
+.boot-progress-container {
+    width: 250px;
+    height: 3px;
+    background: #333;
+    margin-bottom: 10px;
+}
+
+.boot-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 20px var(--neon-cyan);
+    transition: width 0.1s linear; /* Smooth progress */
+}
+
+.boot-message {
+    font-size: 0.8rem;
+    color: var(--neon-purple);
+}
+
+/* --- BACKGROUND EFFECTS --- */
+.quantum-core {
+    position: fixed;
+    inset: -50%; /* Expands background to cover outside viewport for better rotation */
+    background: conic-gradient(from 0deg at 50% 50%, var(--bg-dark) 0deg, var(--neon-purple) 180deg, var(--bg-dark) 360deg);
+    animation: spin-slow 30s linear infinite;
+    opacity: 0.3;
+    z-index: -2;
+    filter: blur(100px);
+    pointer-events: none;
+}
+.quantum-core::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, var(--neon-cyan) 180deg, transparent 360deg);
+    animation: spin-reverse 20s linear infinite;
+    mix-blend-mode: overlay; /* Creates cool color blending */
+    pointer-events: none;
+}
+
+@keyframes spin-slow {
+    to { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+    to { transform: rotate(-360deg); }
+}
+
+.ar-mesh {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    /* Create a radial mask to make mesh fade towards edges */
+    mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
+    opacity: 0.5;
+}
+
+/* --- CUSTOM CURSOR --- */
+.cursor-dot {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10002;
+    box-shadow: 0 0 10px #fff, 0 0 30px var(--neon-cyan);
+    transform: translate(-50%, -50%); /* Center the dot */
+    transition: transform 0.05s linear; /* Fast response */
+}
+
+.cursor-ring {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10001;
+    border: 1px solid var(--neon-cyan);
+    box-shadow: 0 0 20px var(--neon-cyan);
+    transform: translate(-50%, -50%); /* Center the ring */
+    transition: transform 0.1s ease-out, width 0.3s ease, height 0.3s ease; /* Smooth follow and size change */
+}
+
+#cursor-ring-1 {
+    width: 40px;
+    height: 40px;
+    animation: spin-slow 5s linear infinite;
+    border-color: var(--neon-purple); /* Different color for inner ring */
+}
+
+#cursor-ring-2 {
+    width: 60px;
+    height: 60px;
+    animation: spin-reverse 8s linear infinite;
+    opacity: 0.5; /* Larger, more subtle ring */
+}
+
+/* --- HEADER / NAVIGATION --- */
+.main-header {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 1000;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--neon-cyan);
+    mix-blend-mode: difference; /* Cool blending effect with background */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.header-logo {
+    font-weight: 700;
+    letter-spacing: 4px;
+    font-size: 0.9rem;
+}
+
+.header-status {
+    font-size: 0.6rem;
+    opacity: 0.7;
+    line-height: 1.4;
+}
+
+/* --- GENERAL SECTION STYLES --- */
+section {
+    min-height: 100vh;
+    padding: 100px 10%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 10; /* Ensure content is above background effects */
+}
+
+/* --- HERO SECTION --- */
+.hero-section {
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero-subtext {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--neon-pink);
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+/* Chromatic Aberration / RGB Shift Effect */
+.rgb-hero {
+    font-size: clamp(4rem, 15vw, 11rem);
+    font-weight: 900;
+    line-height: 0.85;
+    position: relative;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    mix-blend-mode: lighten; /* Ensures colors blend well with background */
+}
+.rgb-hero::before,
+.rgb-hero::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+    mix-blend-mode: screen;
+}
+.rgb-hero::before {
+    color: var(--neon-pink);
+    z-index: -1;
+    animation: shift-left 3s infinite alternate-reverse;
+}
+.rgb-hero::after {
+    color: var(--neon-cyan);
+    z-index: -2;
+    animation: shift-right 2s infinite alternate-reverse;
+}
+
+@keyframes shift-left {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-5px) skewX(-2deg); }
+}
+@keyframes shift-right {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px) skewX(2deg); }
+}
+
+.rgb-hero.sub-hero {
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--neon-purple); /* Base color for sub-hero */
+    mix-blend-mode: normal; /* Don't blend as intensely */
+    margin-top: 10px;
+}
+
+.hero-description {
+    font-family: 'JetBrains Mono', monospace;
+    max-width: 600px;
+    margin-top: 40px;
+    opacity: 0.7;
+    border-left: 2px solid var(--neon-cyan);
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+/* --- CAPABILITIES SECTION (3D HOLO CARDS) --- */
+.capabilities-section {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start; /* Align content to top of section */
+    padding-top: 150px; /* More padding from top */
+}
+
+.section-title {
+    color: var(--neon-cyan);
+    letter-spacing: 5px;
+    margin-bottom: 50px;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    border-bottom: 2px solid var(--neon-purple);
+    padding-bottom: 10px;
+}
+
+.holo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 50px;
+    width: 100%;
+}
+
+.holo-card-wrap {
+    perspective: 1000px; /* Defines 3D space for children */
+    transform-style: preserve-3d;
+}
+
+.holo-card {
+    min-height: 400px;
+    background: var(--glass);
+    border: 1px solid var(--border-glow);
+    padding: 50px;
+    position: relative;
+    transform-style: preserve-3d; /* Crucial for inner depth */
+    transition: transform 0.1s ease-out; /* Smooth tilt */
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+/* Scanning light bar effect */
+.holo-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(transparent, rgba(0, 242, 255, 0.2), transparent);
+    transform: rotate(45deg) translateY(-100%);
+    animation: scan-card 6s infinite linear;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+@keyframes scan-card {
+    to { transform: rotate(45deg) translateY(100%); }
+}
+
+.holo-content {
+    /* Push content forward for volumetric effect */
+    transform: translateZ(60px) scale(0.95);
+    pointer-events: none;
+    transition: transform 0.1s ease-out; /* For parallax effect */
+}
+
+.holo-card h3 {
+    color: var(--neon-cyan);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.holo-card p {
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.8;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.holo-card::after {
+    content: attr(data-index); /* Display index number from data-attribute */
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 3rem;
+    opacity: 0.1;
+    color: var(--neon-cyan);
+    pointer-events: none;
+}
+
+
+/* --- FOOTER --- */
+.main-footer {
+    padding: 80px 10%;
+    border-top: 1px solid var(--border-glow);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    z-index: 10;
+    position: relative;
+}
+
+.footer-contact h3 {
+    color: var(--neon-pink);
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.footer-contact p {
+    color: var(--neon-cyan);
+}
+
+.footer-status {
+    text-align: right;
+    opacity: 0.6;
+}
