@@ -3,78 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUANTUM_REALITY // brownies</title>
+    <title>QUANTUM_V5 // brownies</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> </head>
+    <style>
+        :root {
+            --neon: #00f2ff;
+            --bg: #000205;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body {
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Syncopate', sans-serif;
+            overflow-x: hidden;
+            height: 300vh; /* Sengaja dibuat panjang untuk tes scroll */
+        }
+
+        /* --- KURSOR FIX --- */
+        .cursor-container {
+            position: fixed; /* WAJIB FIXED agar tidak ikut scroll */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        .c-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--neon);
+            transform: translate(-50%, -50%); /* Titik tengah kursor */
+            will-change: transform;
+        }
+
+        .c-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--neon);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+            will-change: transform;
+        }
+
+        /* --- BACKGROUND --- */
+        .bg-glow {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #001a1a 0%, #000 80%);
+            z-index: -1;
+        }
+
+        /* --- CONTENT --- */
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 10vw, 8rem);
+            text-transform: uppercase;
+            letter-spacing: -5px;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--neon);
+        }
+
+        .scroll-hint {
+            margin-top: 50px;
+            font-family: 'JetBrains Mono';
+            color: var(--neon);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 50px;
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--neon);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+        }
+    </style>
+</head>
 <body>
 
-    <div id="boot-screen">
-        <div class="boot-glitch">INITIALIZING REALITY ENGINE</div>
-        <div class="boot-progress-container">
-            <div id="boot-bar" class="boot-progress-bar"></div>
-        </div>
-        <div id="boot-text" class="boot-message">LOADING MODULES...</div>
+    <div class="cursor-container">
+        <div id="dot" class="c-dot"></div>
+        <div id="ring" class="c-ring"></div>
     </div>
 
-    <div class="quantum-core"></div>
-    <div class="ar-mesh"></div>
+    <div class="bg-glow"></div>
 
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-ring" id="cursor-ring-1"></div>
-    <div class="cursor-ring" id="cursor-ring-2"></div>
-    
-    <header class="main-header">
-        <div class="header-logo">QUANTUM_SYS.V5</div>
-        <div class="header-status">
-            STATUS: ONLINE<br>
-            PING: 0.0001ms
-        </div>
-    </header>
 
-    <section id="hero" class="hero-section">
-        <p class="hero-subtext">> SUBJECT: IDENTIFIED</p>
-        <h1 class="rgb-hero" data-text="brownies">brownies</h1>
-        <h2 class="rgb-hero sub-hero" data-text="REALITY ARCHITECT">REALITY ARCHITECT</h2>
-        <p class="hero-description">
-            Architecting post-human digital experiences. Exploring the boundary between biological intuition and algorithmic precision.
-        </p>
+    <section>
+        <h1>THE END</h1>
+        <p style="font-family:'JetBrains Mono'; margin-top: 20px;">LOGOUT_SEQUENCE_COMPLETE</p>
     </section>
 
-    <section id="capabilities" class="capabilities-section">
-        <h2 class="section-title">>> NEURAL CAPABILITIES</h2>
-        <div class="holo-grid">
-            <div class="holo-card-wrap">
-                <div class="holo-card" data-index="01">
-                    <div class="holo-content">
-                        <h3>01 // QUANTUM UI</h3>
-                        <p>Interfaces that anticipate user intent using predictive modeling and fluid kinetic feedback loops.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="holo-card-wrap">
-                <div class="holo-card" data-index="02">
-                    <div class="holo-content">
-                        <h3>02 // HYPER-STRUCTURE</h3>
-                        <p>Building scalable, decentralized systems resilient enough for the next century of data evolution.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="holo-card-wrap">
-                <div class="holo-card" data-index="03">
-                    <div class="holo-content">
-                        <h3>03 // SYNTHETIC AESTHETICS</h3>
-                        <p>Defining the visual language of the future through generative art and algorithmic design.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-        </div>
-        <div class="footer-status">
-            SYS_INTEGRITY: 100%<br>
-            CONNECTION: SECURE_QUANTUM_LINK
-        </div>
-    </footer>
+    <script>
+        const dot = document.getElementById('dot');
+        const ring = document.getElementById('ring');
 
-    <script src="script.js"></script> </body>
+        // Fungsi utama pelacakan kursor
+        document.addEventListener('mousemove', (e) => {
+            // Gunakan clientX dan clientY (relatif terhadap layar yang terlihat)
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Update posisi menggunakan translate3d untuk akselerasi GPU (super halus)
+            // Penting: Menambahkan unit 'px' secara eksplisit
+            dot.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0)`;
+            
+            // Ring menyusul dengan sedikit transisi CSS
+            ring.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0)`;
+        });
+
+        // Efek interaksi saat hover kartu
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                ring.style.width = '100px';
+                ring.style.height = '100px';
+                ring.style.backgroundColor = 'rgba(0, 242, 255, 0.1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                ring.style.width = '40px';
+                ring.style.height = '40px';
+                ring.style.backgroundColor = 'transparent';
+            });
+        });
+    </script>
+</body>
 </html>
