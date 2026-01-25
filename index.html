@@ -3,316 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMEGA POINT // brownies</title>
+    <title>QUANTUM_REALITY // brownies</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --neon-cyan: #00f2ff;
-            --neon-pink: #ff0055;
-            --neon-purple: #7000ff;
-            --bg-void: #000103;
-            --bg-dark: #020617;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border-glow: rgba(0, 242, 255, 0.3);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        
-        body {
-            background: var(--bg-void);
-            color: #fff;
-            font-family: 'Syncopate', sans-serif;
-            overflow-x: hidden;
-            perspective: 2000px; /* Deeper perspective */
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        /* --- HYPER-FUTURE BACKGROUND CORE --- */
-        .quantum-core {
-            position: fixed; inset: -50%; 
-            background: conic-gradient(from 0deg at 50% 50%, var(--bg-dark) 0deg, var(--neon-purple) 180deg, var(--bg-dark) 360deg);
-            animation: spin-slow 30s linear infinite;
-            opacity: 0.3; z-index: -2;
-            filter: blur(100px);
-        }
-        .quantum-core::after {
-            content: ''; position: absolute; inset: 0;
-            background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, var(--neon-cyan) 180deg, transparent 360deg);
-            animation: spin-reverse 20s linear infinite;
-            mix-blend-mode: overlay;
-        }
-
-        @keyframes spin-slow { to { transform: rotate(360deg); } }
-        @keyframes spin-reverse { to { transform: rotate(-360deg); } }
-
-        /* --- AR MESH OVERLAY --- */
-        .ar-mesh {
-            position: fixed; inset: 0; z-index: 999; pointer-events: none;
-            background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-            mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
-        }
-
-        /* --- ADVANCED CURSOR --- */
-        element.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-        .cursor-ring {
-            position: fixed; border-radius: 50%; pointer-events: none; z-index: 10001;
-            border: 1px solid var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan);
-            transition: transform 0.1s, width 0.3s, height 0.3s; top: 0; left: 0; transform: translate(-50%, -50%);
-        }
-        #c1 { width: 40px; height: 40px; animation: spin-slow 5s linear infinite; border-color: var(--neon-purple); }
-        #c2 { width: 60px; height: 60px; animation: spin-reverse 8s linear infinite; opacity: 0.5; }
-        .cursor-dot {
-            position: fixed; width: 6px; height: 6px; background: #fff;
-            border-radius: 50%; pointer-events: none; z-index: 10002;
-            box-shadow: 0 0 10px #fff, 0 0 30px var(--neon-cyan);
-        }
-
-        /* --- BOOTLOADER --- */
-        #hyper-boot {
-            position: fixed; inset: 0; background: #000; z-index: 10005;
-            display: flex; justify-content: center; align-items: center;
-            font-family: 'JetBrains Mono'; flex-direction: column;
-        }
-        .boot-glitch {
-            font-size: 2rem; color: var(--neon-cyan);
-            text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-purple);
-            animation: glitch-snap 0.2s infinite alternate;
-        }
-        @keyframes glitch-snap {
-            0% { text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-purple); transform: skewX(0deg); }
-            100% { text-shadow: -2px 0 var(--neon-pink), 2px 0 var(--neon-purple); transform: skewX(5deg); }
-        }
-
-        /* --- LAYOUT --- */
-        section { min-height: 90vh; padding: 100px 10%; display: flex; align-items: center; }
-
-        /* --- RGB SHIFT HERO TEXT --- */
-        .rgb-hero {
-            font-size: clamp(4rem, 15vw, 11rem); font-weight: 900; line-height: 0.85;
-            position: relative; color: #fff;
-            text-transform: uppercase;
-            mix-blend-mode: lighten;
-        }
-        .rgb-hero::before, .rgb-hero::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; opacity: 0.8; mix-blend-mode: screen;
-        }
-        .rgb-hero::before { color: var(--neon-pink); z-index: -1; animation: shift-left 3s infinite alternate-reverse; }
-        .rgb-hero::after { color: var(--neon-cyan); z-index: -2; animation: shift-right 2s infinite alternate-reverse; }
-
-        @keyframes shift-left { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-5px) skewX(-2deg); } }
-        @keyframes shift-right { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px) skewX(2deg); } }
-
-        /* --- VOLUMETRIC 3D CARDS --- */
-        .holo-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 50px; width: 100%; margin-top: 100px;
-        }
-
-        .holo-card-wrap {
-            perspective: 1000px; transform-style: preserve-3d;
-        }
-
-        .holo-card {
-            min-height: 400px; background: var(--glass);
-            border: 1px solid var(--border-glow);
-            padding: 50px; position: relative;
-            transform-style: preserve-3d; /* Crucial for inner depth */
-            transition: transform 0.1s ease-out;
-            backdrop-filter: blur(10px);
-            overflow: hidden;
-        }
-
-        /* The scanning light bar */
-        .holo-card::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(transparent, rgba(0, 242, 255, 0.2), transparent);
-            transform: rotate(45deg) translateY(-100%);
-            animation: scan-card 6s infinite linear; pointer-events: none;
-        }
-
-        @keyframes scan-card { to { transform: rotate(45deg) translateY(100%); } }
-
-        /* Inner content pushes forward */
-        .holo-content {
-            transform: translateZ(60px) scale(0.9); /* Pushes text OUT of the card */
-            pointer-events: none;
-        }
-
-        .holo-card h3 { color: var(--neon-cyan); font-size: 1.8rem; margin-bottom: 20px; text-shadow: 0 0 10px var(--neon-cyan); }
-        .holo-card p { font-family: 'JetBrains Mono'; opacity: 0.8; line-height: 1.6; }
-
-        /* --- HUD FOOTER --- */
-        .hud-footer {
-            position: fixed; bottom: 30px; right: 30px; text-align: right;
-            font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--neon-cyan);
-            opacity: 0.6; letter-spacing: 2px;
-        }
-
-    </style>
-</head>
+    <link rel="stylesheet" href="style.css"> </head>
 <body>
 
-    <div id="hyper-boot">
-        <div class="boot-glitch">INITIALIZING OMEGA PROTOCOL</div>
-        <div style="margin-top: 20px; width: 200px; height: 2px; background: #333;">
-            <div id="boot-bar" style="width: 0%; height: 100%; background: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan);"></div>
+    <div id="boot-screen">
+        <div class="boot-glitch">INITIALIZING REALITY ENGINE</div>
+        <div class="boot-progress-container">
+            <div id="boot-bar" class="boot-progress-bar"></div>
         </div>
-        <div id="boot-text" style="margin-top: 10px; font-size: 0.8rem; color: var(--neon-purple);">SYNCING...</div>
+        <div id="boot-text" class="boot-message">LOADING MODULES...</div>
     </div>
 
     <div class="quantum-core"></div>
     <div class="ar-mesh"></div>
-    <div class="cursor-dot" id="cd"></div>
-    <div class="cursor-ring" id="c1"></div>
-    <div class="cursor-ring" id="c2"></div>
-    
-    <div style="position: fixed; top: 30px; left: 30px; font-weight: 700; letter-spacing: 4px; color: var(--neon-cyan); mix-blend-mode: difference;">
-        UNIT_4813621423313
-    </div>
 
-    <section>
-        <div>
-            <p style="font-family: 'JetBrains Mono'; color: var(--neon-pink); letter-spacing: 5px; margin-bottom: 20px;">> SUBJECT: IDENTIFIED</p>
-            <h1 class="rgb-hero" data-text="brownies's">brownies's</h1>
-            <h1 class="rgb-hero" data-text="IDENTITY" style="font-size: clamp(2rem, 5vw, 4rem); color: var(--neon-purple);">IDENTITY</h1>
-            <p style="font-family: 'JetBrains Mono'; max-width: 600px; margin-top: 40px; opacity: 0.7; border-left: 2px solid var(--neon-cyan); padding-left: 20px;">
-                Architecting post-human digital experiences. Exploring the boundary between biological intuition and algorithmic precision.
-            </p>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring-1"></div>
+    <div class="cursor-ring" id="cursor-ring-2"></div>
+    
+    <header class="main-header">
+        <div class="header-logo">QUANTUM_SYS.V5</div>
+        <div class="header-status">
+            STATUS: ONLINE<br>
+            PING: 0.0001ms
         </div>
+    </header>
+
+    <section id="hero" class="hero-section">
+        <p class="hero-subtext">> SUBJECT: IDENTIFIED</p>
+        <h1 class="rgb-hero" data-text="[YOUR NAME]">[YOUR NAME]</h1>
+        <h2 class="rgb-hero sub-hero" data-text="REALITY ARCHITECT">REALITY ARCHITECT</h2>
+        <p class="hero-description">
+            Architecting post-human digital experiences. Exploring the boundary between biological intuition and algorithmic precision.
+        </p>
     </section>
 
-    <section>
-        <div style="width: 100%;">
-            <h2 style="color: var(--neon-cyan); letter-spacing: 5px; margin-bottom: 50px;">>> NEURAL CAPABILITIES</h2>
-            
-            <div class="holo-grid">
-                <div class="holo-card-wrap">
-                    <div class="holo-card">
-                        <div class="holo-content">
-                            <h3>01 // QUANTUM UI</h3>
-                            <p>Interfaces that anticipate user intent using predictive modeling and fluid kinetic feedback loops.</p>
-                        </div>
-                        <div style="position: absolute; bottom: 20px; right: 20px; font-family: 'JetBrains Mono'; font-size: 3rem; opacity: 0.1; color: var(--neon-cyan);">01</div>
+    <section id="capabilities" class="capabilities-section">
+        <h2 class="section-title">>> NEURAL CAPABILITIES</h2>
+        <div class="holo-grid">
+            <div class="holo-card-wrap">
+                <div class="holo-card" data-index="01">
+                    <div class="holo-content">
+                        <h3>01 // QUANTUM UI</h3>
+                        <p>Interfaces that anticipate user intent using predictive modeling and fluid kinetic feedback loops.</p>
                     </div>
                 </div>
-                
-                <div class="holo-card-wrap">
-                    <div class="holo-card">
-                        <div class="holo-content">
-                            <h3>02 // HYPER-STRUCTURE</h3>
-                            <p>Building scalable, decentralized systems resilient enough for the next century of data evolution.</p>
-                        </div>
-                        <div style="position: absolute; bottom: 20px; right: 20px; font-family: 'JetBrains Mono'; font-size: 3rem; opacity: 0.1; color: var(--neon-pink);">02</div>
+            </div>
+            <div class="holo-card-wrap">
+                <div class="holo-card" data-index="02">
+                    <div class="holo-content">
+                        <h3>02 // HYPER-STRUCTURE</h3>
+                        <p>Building scalable, decentralized systems resilient enough for the next century of data evolution.</p>
                     </div>
                 </div>
-
-                <div class="holo-card-wrap">
-                    <div class="holo-card">
-                        <div class="holo-content">
-                            <h3>03 // SYNTHETIC AESTHETICS</h3>
-                            <p>Defining the visual language of the future through generative art and algorithmic design.</p>
-                        </div>
-                        <div style="position: absolute; bottom: 20px; right: 20px; font-family: 'JetBrains Mono'; font-size: 3rem; opacity: 0.1; color: var(--neon-purple);">03</div>
+            </div>
+            <div class="holo-card-wrap">
+                <div class="holo-card" data-index="03">
+                    <div class="holo-content">
+                        <h3>03 // SYNTHETIC AESTHETICS</h3>
+                        <p>Defining the visual language of the future through generative art and algorithmic design.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+        </div>
+        <div class="footer-status">
+            SYS_INTEGRITY: 100%<br>
+            CONNECTION: SECURE_QUANTUM_LINK
+        </div>
+    </footer>
 
-    <div class="hud-footer">
-        SYS_INTEGRITY: 100%<br>
-        CONNECTION: SECURE_QUANTUM_LINK<br>
-        LATENCY: 0.0001ms
-    </div>
-
-    <script>
-        // 1. HYPER BOOT SEQUENCE
-        let progress = 0;
-        const bootBar = document.getElementById('boot-bar');
-        const bootText = document.getElementById('boot-text');
-        const bootScreen = document.getElementById('hyper-boot');
-        const logs = ["LOADING KERNEL...", "DECRYPTING DNA...", "ESTABLISHING NEURAL LINK...", "SYNC COMPLETE."];
-
-        const bootInterval = setInterval(() => {
-            progress += Math.random() * 5;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(bootInterval);
-                bootText.innerText = logs[3];
-                setTimeout(() => {
-                    bootScreen.style.opacity = 0;
-                    bootScreen.style.filter = "blur(20px)"; /* Fade out with blur */
-                    setTimeout(() => bootScreen.remove(), 1000);
-                }, 500);
-            }
-            bootBar.style.width = progress + "%";
-            bootText.innerText = logs[Math.floor((progress / 100) * logs.length)] || logs[0];
-        }, 100);
-
-
-        // 2. MAGNETIC CURSOR SYSTEM
-        const cd = document.getElementById('cd');
-        const c1 = document.getElementById('c1');
-        const c2 = document.getElementById('c2');
-
-        document.addEventListener('mousemove', (e) => {
-            // Main dot moves instantly
-            cd.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
-            
-            // Rings have slight delay for fluid feel
-            setTimeout(() => {
-                c1.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
-            }, 50);
-            setTimeout(() => {
-                c2.style.transform = `translate(${e.clientX - 30}px, ${e.clientY - 30}px)`;
-            }, 100);
-        });
-
-
-        // 3. VOLUMETRIC 3D CARD TILT (PARALLAX DEPTH)
-        document.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('.holo-card');
-            
-            cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                // Calculate mouse position relative to the card center
-                const x = e.clientX - (rect.left + rect.width / 2);
-                const y = e.clientY - (rect.top + rect.height / 2);
-
-                // Calculate rotation (dividing controls sensitivity)
-                // We invert X and Y axes for natural tilt feel
-                const rotateX = (y / rect.height) * -30; 
-                const rotateY = (x / rect.width) * 30;
-
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-        });
-
-        // Reset card position when mouse leaves
-        document.addEventListener('mouseleave', () => {
-            document.querySelectorAll('.holo-card').forEach(card => {
-                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
-            });
-        });
-
-        // Hover interaction enlarge cursor
-        const interactives = document.querySelectorAll('.holo-card-wrap');
-        interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                c1.style.width = '80px'; c1.style.height = '80px';
-                c1.style.borderColor = 'var(--neon-pink)';
-                c2.style.opacity = '0';
-            });
-            el.addEventListener('mouseleave', () => {
-                c1.style.width = '40px'; c1.style.height = '40px';
-                c1.style.borderColor = 'var(--neon-cyan)';
-                c2.style.opacity = '0.5';
-            });
-        });
-
-    </script>
-</body>
+    <script src="script.js"></script> </body>
 </html>
