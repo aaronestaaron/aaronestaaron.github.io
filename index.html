@@ -3,155 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUANTUM_V5 // brownies</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <title>Brownies | Computer Enthusiast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon: #00f2ff;
-            --bg: #000205;
+            /* Palet warna Pink Futuristik / Cyberpunk Pink */
+            --neon-pink: #ff2a85;
+            --hot-pink: #ff69b4;
+            --bocchi-pastel: #ffb6c1;
+            --dark-magenta-glass: rgba(26, 5, 15, 0.65);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        
-        body {
-            background: var(--bg);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #050103;
             color: #fff;
-            font-family: 'Syncopate', sans-serif;
-            overflow-x: hidden;
-            height: 300vh; /* Sengaja dibuat panjang untuk tes scroll */
+            overflow: hidden;
         }
 
-        /* --- KURSOR FIX --- */
-        .cursor-container {
-            position: fixed; /* WAJIB FIXED agar tidak ikut scroll */
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 99999;
+        /* Video Background */
+        #bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+            filter: blur(25px) brightness(0.3); 
+            transition: filter 1.5s ease-in-out;
         }
 
-        .c-dot {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--neon);
-            transform: translate(-50%, -50%); /* Titik tengah kursor */
-            will-change: transform;
+        #bg-video.unblurred {
+            filter: blur(0px) brightness(0.6);
         }
 
-        .c-ring {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--neon);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, border-color 0.3s;
-            will-change: transform;
-        }
-
-        /* --- BACKGROUND --- */
-        .bg-glow {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, #001a1a 0%, #000 80%);
-            z-index: -1;
-        }
-
-        /* --- CONTENT --- */
-        section {
-            height: 100vh;
+        /* Layar Overlay untuk Klik */
+        #interaction-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 20px;
+            background: rgba(15, 0, 10, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            cursor: pointer;
+            transition: opacity 0.8s ease;
         }
 
-        h1 {
-            font-size: clamp(2rem, 10vw, 8rem);
-            text-transform: uppercase;
-            letter-spacing: -5px;
-            color: transparent;
-            -webkit-text-stroke: 1px var(--neon);
-        }
-
-        .scroll-hint {
-            margin-top: 50px;
-            font-family: 'JetBrains Mono';
-            color: var(--neon);
-            animation: pulse 2s infinite;
+        .click-prompt {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            color: var(--bocchi-pastel);
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 30px var(--hot-pink);
+            letter-spacing: 4px;
+            animation: pulse 1.5s infinite alternate;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+            0% { opacity: 0.5; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1.02); }
         }
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 50px;
-            backdrop-filter: blur(10px);
-            max-width: 500px;
-            transition: 0.3s;
+        /* Konten Utama */
+        #main-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.2s ease 0.8s;
         }
 
-        .card:hover {
-            border-color: var(--neon);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+        #main-container.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Kartu Kaca Futuristik (Lebih Pink & Neon) */
+        .glass-card {
+            background: var(--dark-magenta-glass);
+            border: 1px solid rgba(255, 105, 180, 0.4);
+            /* Aksen neon pink di sisi kiri */
+            border-left: 5px solid var(--neon-pink);
+            /* Cahaya neon pink di belakang kartu */
+            box-shadow: 0 0 40px rgba(255, 42, 133, 0.3), inset 0 0 15px rgba(255, 105, 180, 0.2);
+            backdrop-filter: blur(12px);
+            padding: 45px;
+            border-radius: 8px;
+            text-align: left;
+            max-width: 600px;
+            transform: translateY(20px);
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        #main-container.visible .glass-card {
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            /* Teks shadow full pink neon */
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            color: var(--hot-pink);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            display: inline-block;
+            border-bottom: 1px solid var(--neon-pink);
+            padding-bottom: 5px;
+        }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #f5e6eb; /* Putih kemerah-mudaan */
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        /* Badge/Label Keahlian */
+        .tech-stack {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: rgba(255, 42, 133, 0.15);
+            border: 1px solid var(--neon-pink);
+            padding: 6px 14px;
+            border-radius: 4px; /* Sudut agak kotak untuk kesan tech/cyber */
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--bocchi-pastel);
+            box-shadow: 0 0 8px rgba(255, 42, 133, 0.4);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            background: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 15px var(--neon-pink);
+            cursor: default;
         }
     </style>
 </head>
 <body>
 
-    <div class="cursor-container">
-        <div id="dot" class="c-dot"></div>
-        <div id="ring" class="c-ring"></div>
+    <video id="bg-video" loop>
+        <source src="backgrvid.mp4" type="video/mp4">
+    </video>
+
+    <div id="interaction-overlay">
+        <div class="click-prompt">[ TAP ANYWHERE TO START ]</div>
     </div>
 
-    <div class="bg-glow"></div>
-
-
-    <section>
-        <h1>THE END</h1>
-        <p style="font-family:'JetBrains Mono'; margin-top: 20px;">LOGOUT_SEQUENCE_COMPLETE</p>
-    </section>
+    <div id="main-container">
+        <div class="glass-card">
+            <h1>Hi</h1>
+            <h2>> brownies.</h2>
+            
+            <p>Welcome to my page. I have a huge interest in the world of computers and technology. I really enjoy figuring out how systems work, from building and understanding hardware to writing code.</p>
+            
+            <p>I spend most of my free time learning about different operating systems, trying out new software, and troubleshooting everyday tech problems. I'm always eager to improve my skills and learn something new in the tech space.</p>
+            
+            <div class="tech-stack">
+                <span class="tech-badge">HARDWARE</span>
+                <span class="tech-badge">SOFTWARE</span>
+                <span class="tech-badge">NETWORKING</span>
+                <span class="tech-badge">TROUBLESHOOTING</span>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const dot = document.getElementById('dot');
-        const ring = document.getElementById('ring');
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('interaction-overlay');
+            const video = document.getElementById('bg-video');
+            const mainContainer = document.getElementById('main-container');
 
-        // Fungsi utama pelacakan kursor
-        document.addEventListener('mousemove', (e) => {
-            // Gunakan clientX dan clientY (relatif terhadap layar yang terlihat)
-            const x = e.clientX;
-            const y = e.clientY;
+            overlay.addEventListener('click', () => {
+                // Sembunyikan layar penutup
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 800);
 
-            // Update posisi menggunakan translate3d untuk akselerasi GPU (super halus)
-            // Penting: Menambahkan unit 'px' secara eksplisit
-            dot.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0)`;
-            
-            // Ring menyusul dengan sedikit transisi CSS
-            ring.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0)`;
-        });
+                // Mulai video beserta suaranya
+                video.muted = false; 
+                video.play().catch(e => console.log("Video autoplay blocked:", e));
 
-        // Efek interaksi saat hover kartu
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                ring.style.width = '100px';
-                ring.style.height = '100px';
-                ring.style.backgroundColor = 'rgba(0, 242, 255, 0.1)';
-            });
-            card.addEventListener('mouseleave', () => {
-                ring.style.width = '40px';
-                ring.style.height = '40px';
-                ring.style.backgroundColor = 'transparent';
+                // Hapus efek blur
+                video.classList.add('unblurred');
+
+                // Munculkan teks
+                mainContainer.classList.add('visible');
             });
         });
     </script>
